@@ -14,5 +14,6 @@ const reviewSchema = new Schema(
 );
 
 reviewSchema.index({ toUserId: 1, createdAt: -1 });
+reviewSchema.index({ bookingId: 1, fromUserId: 1 }, { unique: true });
 
 export const Review = model('Review', reviewSchema);

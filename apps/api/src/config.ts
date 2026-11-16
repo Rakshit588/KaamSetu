@@ -18,4 +18,6 @@ export const config = {
   platformFeeRate: Number(process.env.PLATFORM_FEE_RATE ?? 0.08),
   logLevel: process.env.LOG_LEVEL ?? 'info',
   openaiKey: process.env.OPENAI_API_KEY ?? '',
+  paymentProvider: process.env.PAYMENT_PROVIDER ?? 'mock',
+  razorpayKeyId: process.env.RAZORPAY_KEY_ID ?? '',
 };

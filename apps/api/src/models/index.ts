@@ -10,3 +10,5 @@ export { Advertisement } from './Advertisement.js';
 export { Report } from './Report.js';
 export { SubscriptionPlan } from './SubscriptionPlan.js';
 export { Waitlist } from './Waitlist.js';
+export { WalletTransaction } from './WalletTransaction.js';
+export { BulkRequirement } from './BulkRequirement.js';
