@@ -133,7 +133,12 @@ authRouter.post(
     try {
       const payload = jwt.verify(req.body.refreshToken, config.jwtRefreshSecret) as {
         sub: string;
+        typ?: string;
+        jti?: string;
       };
+      if (payload.typ !== 'refresh' || !payload.jti) {
+        throw new AppError(401, 'Invalid refresh token', 'UNAUTHENTICATED');
+      }
       const user = await User.findById(payload.sub);
       if (!user) throw new AppError(401, 'Invalid refresh token', 'UNAUTHENTICATED');
       const hash = sha256(req.body.refreshToken);

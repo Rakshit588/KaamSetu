@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import type { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../config.js';
@@ -25,6 +26,7 @@ export function signAccessToken(userId: string, role: Role | null): string {
 export function signRefreshToken(userId: string): string {
   return jwt.sign({ sub: userId, typ: 'refresh' }, config.jwtRefreshSecret, {
     expiresIn: config.refreshTtl as jwt.SignOptions['expiresIn'],
+    jwtid: randomUUID(),
   });
 }
 
