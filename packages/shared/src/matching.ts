@@ -78,7 +78,7 @@ const TRADE_KEYWORDS: Record<TradeKey, string[]> = {
 
 export function mapTextToTrade(text: string): { trade: TradeKey | null; urgency: 'normal' | 'emergency' } {
   const t = text.toLowerCase();
-  const emergency =
+  const urgency: 'normal' | 'emergency' =
     /emergency|urgent|now|abhi|turant|फटाफट|अभी|जरूरी/.test(t) ? 'emergency' : 'normal';
   let best: TradeKey | null = null;
   let bestHits = 0;
