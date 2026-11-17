@@ -7,6 +7,7 @@ import { errorHandler } from './middleware/error.js';
 import { adminRouter } from './routes/admin.js';
 import { aiRouter } from './routes/ai.js';
 import { authRouter } from './routes/auth.js';
+import { bookingsRouter } from './routes/bookings.js';
 import { customersRouter } from './routes/customers.js';
 import { pricingRouter } from './routes/pricing.js';
 import { tradesRouter } from './routes/trades.js';
@@ -35,7 +36,7 @@ export function createApp() {
   }
 
   app.get('/health', (_req, res) => {
-    res.json({ ok: true, service: 'kaamsetu-api', stage: '1-3' });
+    res.json({ ok: true, service: 'kaamsetu-api', stage: '1-4' });
   });
 
   if (config.env !== 'test') {
@@ -46,6 +47,7 @@ export function createApp() {
   app.use('/workers', workersRouter);
   app.use('/customers', customersRouter);
   app.use('/pricing', pricingRouter);
+  app.use('/bookings', bookingsRouter);
   app.use('/admin', adminRouter);
   app.use('/ai', aiRouter);
 
