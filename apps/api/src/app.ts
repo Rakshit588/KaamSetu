@@ -8,9 +8,13 @@ import { adminRouter } from './routes/admin.js';
 import { aiRouter } from './routes/ai.js';
 import { authRouter } from './routes/auth.js';
 import { bookingsRouter } from './routes/bookings.js';
+import { chatRouter } from './routes/chat.js';
 import { customersRouter } from './routes/customers.js';
+import { notificationsRouter } from './routes/notifications.js';
 import { pricingRouter } from './routes/pricing.js';
+import { reviewsRouter } from './routes/reviews.js';
 import { tradesRouter } from './routes/trades.js';
+import { walletRouter } from './routes/wallet.js';
 import { workersRouter } from './routes/workers.js';
 
 export function createApp() {
@@ -48,6 +52,10 @@ export function createApp() {
   app.use('/customers', customersRouter);
   app.use('/pricing', pricingRouter);
   app.use('/bookings', bookingsRouter);
+  app.use('/reviews', reviewsRouter);
+  app.use('/chat', chatRouter);
+  app.use('/notifications', notificationsRouter);
+  app.use('/wallet', walletRouter);
   app.use('/admin', adminRouter);
   app.use('/ai', aiRouter);
 
