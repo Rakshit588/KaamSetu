@@ -3,6 +3,7 @@
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useAuth } from '@/lib/auth';
 import { Logo } from '../Logo';
 import { ThemeToggle } from '../ThemeToggle';
 
@@ -15,6 +16,9 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const { status } = useAuth();
+  const authed = status === 'authed';
+  const cta = authed ? { href: '/dashboard', label: 'Dashboard' } : { href: '/login', label: 'Log in' };
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/10 bg-bg/80 backdrop-blur-xl">
@@ -33,8 +37,8 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link href="/login" className="btn btn-primary hidden !min-h-[44px] !px-5 !py-2.5 sm:inline-flex">
-            Log in
+          <Link href={cta.href} className="btn btn-primary hidden !min-h-[44px] !px-5 !py-2.5 sm:inline-flex">
+            {cta.label}
           </Link>
           <button
             type="button"
@@ -61,8 +65,8 @@ export function Navbar() {
                 {l.label}
               </a>
             ))}
-            <Link href="/login" className="btn btn-primary mt-2">
-              Log in
+            <Link href={cta.href} className="btn btn-primary mt-2">
+              {cta.label}
             </Link>
           </div>
         </div>

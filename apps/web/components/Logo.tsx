@@ -1,4 +1,4 @@
-export function Logo({ className = '' }: { className?: string }) {
+export function Logo({ className = '', tone = 'default' }: { className?: string; tone?: 'default' | 'light' }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <svg viewBox="0 0 40 40" width="34" height="34" aria-hidden="true">
@@ -13,7 +13,11 @@ export function Logo({ className = '' }: { className?: string }) {
         <path d="M5 29 H35" stroke="#0B1F4B" strokeWidth="3" strokeLinecap="round" />
         <path d="M13 19 V29 M20 16 V29 M27 19 V29" stroke="#0B1F4B" strokeWidth="2" strokeLinecap="round" />
       </svg>
-      <span className="font-display text-[22px] font-semibold leading-none tracking-tight text-ink">
+      <span
+        className={`font-display text-[22px] font-semibold leading-none tracking-tight ${
+          tone === 'light' ? 'text-[#FFF8E7]' : 'text-ink'
+        }`}
+      >
         Kaam<span className="text-saffron">सेतु</span>
       </span>
     </span>

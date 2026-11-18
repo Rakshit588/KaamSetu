@@ -68,8 +68,8 @@ Items marked "code delivered" are written but not yet confirmed by running them.
 
 - [ ] Design system: tokens, light + dark, fonts, buttons, cards (code delivered)
 - [ ] Landing page: hero, stats, how it works, trades, trust, stories, FAQ, CTA (code delivered)
-- [ ] Login (OTP) and role selection
-- [ ] API client + auth state
+- [ ] Login (OTP) and role selection (code delivered)
+- [ ] API client + auth state: token refresh, session restore (code delivered)
 - [ ] i18n (English, Hindi first)
 
 ## Stage 6 — web screens
