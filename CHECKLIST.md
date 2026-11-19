@@ -66,15 +66,17 @@ Items marked "code delivered" are written but not yet confirmed by running them.
 
 ## Stage 5 — web foundation (in progress)
 
-- [ ] Design system: tokens, light + dark, fonts, buttons, cards (code delivered)
-- [ ] Landing page: hero, stats, how it works, trades, trust, stories, FAQ, CTA (code delivered)
-- [ ] Login (OTP) and role selection (code delivered)
-- [ ] API client + auth state: token refresh, session restore (code delivered)
-- [ ] i18n (English, Hindi first)
+- [x] Design system: tokens, light + dark, fonts, buttons, cards
+- [x] Landing page: hero, stats, how it works, trades, trust, stories, FAQ, CTA
+- [x] Login (OTP) and role selection
+- [x] API client + auth state: token refresh, session restore
+- [ ] i18n scaffold: English + Hindi dictionaries, language switcher (code delivered; screens will use it as they are built)
+- [ ] Shared UI: skeleton, empty / error states, demo badge, stars, trust ring, map (Leaflet), socket client (code delivered)
 
 ## Stage 6 — web screens
 
-- [ ] Customer: home (map), search results, worker profile, booking confirm, live tracking + chat, payment, review, history
+- [ ] Customer: app shell with role guard and bottom nav, home with map + trade chips + emergency entry, notifications page (code delivered)
+- [ ] Customer: search results, worker profile, booking confirm, live tracking + chat, payment, review, history
 - [ ] Customer: emergency "need a worker now" flow
 - [ ] Customer: contractor bulk-hire + subscription screens
 - [ ] Worker: onboarding wizard, home (availability toggle, incoming requests with countdown), active job, earnings, ID card with QR, reputation, referral, premium

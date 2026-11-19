@@ -17,9 +17,11 @@ export default function DashboardPage() {
   useEffect(() => {
     if (status === 'guest') router.replace('/login?next=/dashboard');
     if (status === 'authed' && user && !user.role) router.replace('/login');
+    // Each role gets its own home as it is built. Customers are ready.
+    if (status === 'authed' && user?.role === 'customer') router.replace('/customer');
   }, [status, user, router]);
 
-  if (status !== 'authed' || !user || !user.role) {
+  if (status !== 'authed' || !user || !user.role || user.role === 'customer') {
     return <div className="grid min-h-screen place-items-center text-muted">Loading...</div>;
   }
 
@@ -42,8 +44,8 @@ export default function DashboardPage() {
           Hello, {user.name || 'there'}
         </h1>
         <p className="mt-3 max-w-xl text-muted">
-          Your login works end to end: OTP, role and tokens. Your {roleLabel[user.role].toLowerCase()} home screen is
-          built in the next step.
+          Your {roleLabel[user.role].toLowerCase()} home screen is built in a later step. Customer accounts already
+          have theirs.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">

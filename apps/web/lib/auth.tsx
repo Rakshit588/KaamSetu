@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { ApiError, SIGNED_OUT_EVENT, api, tokens } from './api';
+import { disconnectSocket } from './socket';
 import type { User } from './types';
 
 type Status = 'loading' | 'authed' | 'guest';
@@ -51,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // The API client fires this when a token can no longer be refreshed.
   useEffect(() => {
     const onSignedOut = () => {
+      disconnectSocket();
       setUser(null);
       setStatus('guest');
     };
@@ -77,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       /* we sign out locally even if the server call fails */
     }
+    disconnectSocket();
     tokens.clear();
     setUser(null);
     setStatus('guest');

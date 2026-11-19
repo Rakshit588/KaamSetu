@@ -23,17 +23,24 @@ export function createApp() {
   app.use(cors({ origin: config.corsOrigin, credentials: true }));
   app.use(express.json({ limit: '2mb' }));
 
+  const isProd = config.env === 'production';
+  const tooMany = {
+    message: 'Too many requests. Please wait a few minutes and try again.',
+    code: 'RATE_LIMITED',
+  };
   const generalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 300,
+    max: isProd ? 300 : 5000,
     standardHeaders: true,
     legacyHeaders: false,
+    message: tooMany,
   });
   const otpLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 10,
+    max: isProd ? 10 : 200,
     standardHeaders: true,
     legacyHeaders: false,
+    message: tooMany,
   });
   if (config.env !== 'test') {
     app.use(generalLimiter);
