@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { api } from './api';
@@ -29,7 +29,6 @@ export function useWorkerDetails(ids: string[]) {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   return (id: string) => cache.get(id);

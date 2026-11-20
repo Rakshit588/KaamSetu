@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -52,7 +52,6 @@ function FitBounds({ pins, me }: { pins: MapPinData[]; me?: LatLng | null }) {
     if (me) points.push([me.lat, me.lng]);
     if (points.length === 0) return;
     map.fitBounds(L.latLngBounds(points).pad(0.25), { maxZoom: 16 });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, map]);
   return null;
 }
