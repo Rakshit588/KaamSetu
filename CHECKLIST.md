@@ -86,7 +86,11 @@ Status: **API (Stages 1 to 4) is done and tested** (41 automated tests: 15 share
 - [ ] Customer: booking history with active / past tabs and book again (code delivered, not yet tested by hand)
 - [ ] Customer: emergency booking flow with countdown and timeout state (code delivered, not yet tested by hand)
 - [ ] Customer: contractor bulk-hire + subscription screens
-- [ ] Worker: onboarding wizard, home (availability toggle, incoming requests with countdown), active job, earnings, ID card with QR, reputation, referral, premium
+- [ ] Worker: onboarding wizard with trades, rates inside the allowed band, location pin, radius, bio (code delivered)
+- [ ] Worker: home with availability toggle (broadcast live), incoming requests with 45 s countdown, accept and decline, today's earnings, active job card (code delivered)
+- [ ] Worker: job page with on the way, start and complete with OTPs, map, chat, rate the customer, cancel (code delivered)
+- [ ] Worker: notifications page (code delivered)
+- [ ] Worker: earnings page, ID card with QR and verification form, reputation, reviews, referral, premium (not built yet)
 - [ ] Admin: analytics, verification queue, users, bookings, disputes, fraud flags, trades, ads
 
 ## Stage 7 — polish

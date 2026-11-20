@@ -6,9 +6,18 @@ import { errorMessage } from '@/lib/errors';
 import { useT, type TKey } from '@/lib/i18n';
 import { StarRating } from '../ui/StarRating';
 
-const TAGS = ['punctual', 'skilled', 'polite'] as const;
+const DEFAULT_TAGS = ['punctual', 'skilled', 'polite'];
 
-export function ReviewForm({ bookingId }: { bookingId: string }) {
+export function ReviewForm({
+  bookingId,
+  title,
+  tags: tagOptions = DEFAULT_TAGS,
+}: {
+  bookingId: string;
+  /** Heading override, for example when a worker rates a customer. */
+  title?: string;
+  tags?: string[];
+}) {
   const { t } = useT();
   const [rating, setRating] = useState(0);
   const [tags, setTags] = useState<string[]>([]);
@@ -46,13 +55,13 @@ export function ReviewForm({ bookingId }: { bookingId: string }) {
   }
 
   return (
-    <section className="card p-5" aria-label={t('review.title')}>
-      <h2 className="font-display text-xl font-semibold">{t('review.title')}</h2>
+    <section className="card p-5" aria-label={title ?? t('review.title')}>
+      <h2 className="font-display text-xl font-semibold">{title ?? t('review.title')}</h2>
       <div className="mt-2">
         <StarRating value={rating} onChange={setRating} />
       </div>
       <div className="mt-3 flex flex-wrap gap-2">
-        {TAGS.map((tag) => {
+        {tagOptions.map((tag) => {
           const on = tags.includes(tag);
           return (
             <button

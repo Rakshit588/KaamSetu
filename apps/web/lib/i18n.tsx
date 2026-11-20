@@ -3,12 +3,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { en as enBase } from '../locales/en';
 import { enSearch } from '../locales/en.search';
+import { enWorker } from '../locales/en.worker';
 import { hi as hiBase } from '../locales/hi';
 import { hiSearch } from '../locales/hi.search';
+import { hiWorker } from '../locales/hi.worker';
 
 // Dictionaries are split by area and merged here. English is the source of truth.
-const en = { ...enBase, ...enSearch } as const;
-const hi = { ...hiBase, ...hiSearch };
+const en = { ...enBase, ...enSearch, ...enWorker } as const;
+const hi = { ...hiBase, ...hiSearch, ...hiWorker };
 
 export type Lang = 'en' | 'hi';
 export type TKey = keyof typeof en;
