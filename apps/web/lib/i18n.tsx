@@ -1,8 +1,14 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { en } from '../locales/en';
-import { hi } from '../locales/hi';
+import { en as enBase } from '../locales/en';
+import { enSearch } from '../locales/en.search';
+import { hi as hiBase } from '../locales/hi';
+import { hiSearch } from '../locales/hi.search';
+
+// Dictionaries are split by area and merged here. English is the source of truth.
+const en = { ...enBase, ...enSearch } as const;
+const hi = { ...hiBase, ...hiSearch };
 
 export type Lang = 'en' | 'hi';
 export type TKey = keyof typeof en;
@@ -47,7 +53,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const t = useCallback(
     (key: TKey, vars?: Vars) => {
-      const raw = dictionaries[lang][key] ?? en[key];
+      const raw: string = dictionaries[lang][key] ?? en[key] ?? key;
       if (!vars) return raw;
       return raw.replace(/\{(\w+)\}/g, (_, name: string) => String(vars[name] ?? `{${name}}`));
     },

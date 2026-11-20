@@ -1,7 +1,8 @@
 # KaamSetu feature checklist
 
-Status: **Stages 1 to 4 (API) are done and tested** (41 automated tests: 15 shared + 26 API). Stage 5 (web) has started.
-Items marked "code delivered" are written but not yet confirmed by running them.
+Status: **API (Stages 1 to 4) is done and tested** (41 automated tests: 15 shared + 26 API). **Web: the customer journey works end to end** (login, home, search, worker profile, booking, live tracking, chat, demo payment, review), tested by hand. Worker screens, admin and polish are next.
+
+- `[x]` = built and tested. `[ ]` = not done. "code delivered" = written but not yet tested by hand.
 
 ## Stage 1 — scaffolding
 
@@ -64,20 +65,26 @@ Items marked "code delivered" are written but not yet confirmed by running them.
 - [ ] Swagger at `/docs`
 - [ ] Test the `jobsAccepted` / `jobsCancelled` counters
 
-## Stage 5 — web foundation (in progress)
+## Stage 5 — web foundation
 
 - [x] Design system: tokens, light + dark, fonts, buttons, cards
 - [x] Landing page: hero, stats, how it works, trades, trust, stories, FAQ, CTA
 - [x] Login (OTP) and role selection
 - [x] API client + auth state: token refresh, session restore
-- [ ] i18n scaffold: English + Hindi dictionaries, language switcher (code delivered; screens will use it as they are built)
-- [ ] Shared UI: skeleton, empty / error states, demo badge, stars, trust ring, map (Leaflet), socket client (code delivered)
+- [x] i18n scaffold: English + Hindi dictionaries, language switcher (every customer screen uses it)
+- [x] Shared UI: skeleton, empty / error states, demo badge, stars, trust ring, map (Leaflet), socket client
 
 ## Stage 6 — web screens
 
-- [ ] Customer: app shell with role guard and bottom nav, home with map + trade chips + emergency entry, notifications page (code delivered)
-- [ ] Customer: search results, worker profile, booking confirm, live tracking + chat, payment, review, history
-- [ ] Customer: emergency "need a worker now" flow
+- [x] Customer: app shell with role guard and bottom nav, home with map, GPS, draggable pin, trade chips, emergency entry
+- [ ] Customer: notifications page (code delivered, not yet tested by hand)
+- [x] Customer: search with trade chips, "describe the problem" box, filters, sort, list and map views, live availability, match reasons, price estimate
+- [x] Customer: worker profile page with trust breakdown, reviews, map
+- [x] Customer: booking confirm with live price estimate
+- [x] Customer: booking tracking: status bridge, OTPs, live chat, pay + release (demo), review, timeline
+- [ ] Customer: cancel and "report a problem" buttons (code delivered, not yet tested by hand)
+- [ ] Customer: booking history with active / past tabs and book again (code delivered, not yet tested by hand)
+- [ ] Customer: emergency booking flow with countdown and timeout state (code delivered, not yet tested by hand)
 - [ ] Customer: contractor bulk-hire + subscription screens
 - [ ] Worker: onboarding wizard, home (availability toggle, incoming requests with countdown), active job, earnings, ID card with QR, reputation, referral, premium
 - [ ] Admin: analytics, verification queue, users, bookings, disputes, fraud flags, trades, ads
@@ -107,3 +114,15 @@ Items marked "code delivered" are written but not yet confirmed by running them.
 - `npx tsc -p apps/api/tsconfig.json --noEmit` reports about 28 type errors in older files (null checks on `location` / `verification`, Mongoose array types in `auth.ts` and `booking.ts`, `providers/notification.ts` passes 4 arguments to a 3-argument function). Tests and `tsx` run fine; `tsc` builds will not until these are fixed.
 - `availability:update` socket event is broadcast to every connected client.
 - Short keywords such as "ac" in the free-text trade mapper can match inside other words.
+- `GET /workers/search` returns no worker name or location, so the search screen fetches each worker's profile (about 8 extra requests). Add `name` and `location` to the search response to remove them.
+- The worker side has no screens yet. `scripts/worker-sim.ps1` plays the worker (accept, on the way, start, complete, chat) from the terminal for testing.
+- Dev only: the API rate limits are loosened outside production. On Windows, `esbuild` sometimes loses its platform binary after `npm install`; reinstall it with `npm install --no-save @esbuild/win32-x64@<same version as esbuild>`.
+- Review tags in the UI are limited to punctual, skilled and polite until the full tag list is confirmed.
+
+## Next up
+
+1. Test the remaining customer screens by hand: notifications, history, emergency, cancel.
+2. Worker screens: onboarding wizard, home with availability toggle and incoming requests, active job, earnings, ID card, reputation (see the Stage 6 worker line above).
+3. Admin API endpoints and screens.
+4. Remaining API features: PDF invoice, bulk hire, favourites, ads, referrals, subscriptions, Swagger.
+5. Polish: PWA, voice input, dark mode and accessibility pass, README and demo script.

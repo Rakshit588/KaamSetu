@@ -15,3 +15,19 @@ export function timeAgo(input: string | Date, lang: 'en' | 'hi' = 'en'): string 
   if (abs < 86400) return rtf.format(Math.round(seconds / 3600), 'hour');
   return rtf.format(Math.round(seconds / 86400), 'day');
 }
+
+export function formatDateTime(input: string | Date, lang: 'en' | 'hi' = 'en'): string {
+  return new Date(input).toLocaleString(lang === 'hi' ? 'hi-IN' : 'en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+}
+
+/** Rates may be stored as 0..1 or 0..100; show a whole percentage either way. */
+export function asPercent(n: number | null | undefined): number {
+  const v = n ?? 0;
+  return Math.round(v <= 1 ? v * 100 : v);
+}
+
+export function initials(name: string | null | undefined): string {
+  const parts = (name ?? '').trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  return (parts[0][0] + (parts[1]?.[0] ?? '')).toUpperCase();
+}
