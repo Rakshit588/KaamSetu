@@ -4,13 +4,15 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
 import { en as enBase } from '../locales/en';
 import { enSearch } from '../locales/en.search';
 import { enWorker } from '../locales/en.worker';
+import { enWorker2 } from '../locales/en.worker2';
 import { hi as hiBase } from '../locales/hi';
 import { hiSearch } from '../locales/hi.search';
 import { hiWorker } from '../locales/hi.worker';
+import { hiWorker2 } from '../locales/hi.worker2';
 
 // Dictionaries are split by area and merged here. English is the source of truth.
-const en = { ...enBase, ...enSearch, ...enWorker } as const;
-const hi = { ...hiBase, ...hiSearch, ...hiWorker };
+const en = { ...enBase, ...enSearch, ...enWorker, ...enWorker2 } as const;
+const hi = { ...hiBase, ...hiSearch, ...hiWorker, ...hiWorker2 };
 
 export type Lang = 'en' | 'hi';
 export type TKey = keyof typeof en;

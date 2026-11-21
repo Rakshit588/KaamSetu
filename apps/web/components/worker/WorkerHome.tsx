@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Crown, Gift, Rocket } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -205,6 +205,31 @@ export function WorkerHome({ profile, onProfileChange }: { profile: WorkerProfil
             />
           ))
         )}
+      </section>
+
+      <section aria-label={t('wm.more')} className="space-y-3">
+        <h2 className="font-display text-2xl font-semibold">{t('wm.more')}</h2>
+        <ul className="grid gap-3 sm:grid-cols-3">
+          {(
+            [
+              { href: '/worker/referral', label: 'wm.referral', icon: Gift },
+              { href: '/worker/premium', label: 'wm.premium', icon: Crown },
+              { href: '/worker/soon', label: 'wm.soon', icon: Rocket },
+            ] as const
+          ).map((item) => {
+            const Icon = item.icon;
+            return (
+              <li key={item.href}>
+                <Link href={item.href} className="card flex items-center gap-3 p-4 transition hover:shadow-lift">
+                  <span className="grid h-11 w-11 place-items-center rounded-xl2 bg-saffron/15 text-flame">
+                    <Icon size={20} />
+                  </span>
+                  <span className="font-semibold">{t(item.label)}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </section>
     </div>
   );

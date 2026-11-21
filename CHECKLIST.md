@@ -1,4 +1,4 @@
-# KaamSetu feature checklist
+ # KaamSetu feature checklist
 
 Status: **API (Stages 1 to 4) is done and tested** (41 automated tests: 15 shared + 26 API). **Web: the customer journey works end to end** (login, home, search, worker profile, booking, live tracking, chat, demo payment, review), tested by hand. Worker screens, admin and polish are next.
 

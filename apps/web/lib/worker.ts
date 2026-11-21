@@ -16,9 +16,10 @@ export type WorkerProfileMe = {
   jobsCancelled?: number;
   completionRate?: number;
   responseRate?: number;
+  onTimeRate?: number;
   earningsTotal?: number;
   isPremium?: boolean;
-  verification?: { status?: string; phoneVerified?: boolean };
+  verification?: { status?: string; phoneVerified?: boolean; rejectionReason?: string };
 };
 
 // GET /wallet/me
