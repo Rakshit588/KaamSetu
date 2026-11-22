@@ -1,6 +1,6 @@
- # KaamSetu feature checklist
+# KaamSetu feature checklist
 
-Status: **API (Stages 1 to 4) is done and tested** (41 automated tests: 15 shared + 26 API). **Web: the customer journey works end to end** (login, home, search, worker profile, booking, live tracking, chat, demo payment, review), tested by hand. Worker screens, admin and polish are next.
+Status: **API (Stages 1 to 4) is done and tested** (41 automated tests: 15 shared + 26 API). **Web: the customer journey and the worker core work end to end** (login, search, booking, live requests, accept, OTP start and finish, chat, demo payment, review), tested by hand. Worker extras (earnings, ID card with QR, verification, reputation) work too. Admin, the remaining API features and polish are next.
 
 - `[x]` = built and tested. `[ ]` = not done. "code delivered" = written but not yet tested by hand.
 
@@ -86,11 +86,18 @@ Status: **API (Stages 1 to 4) is done and tested** (41 automated tests: 15 share
 - [ ] Customer: booking history with active / past tabs and book again (code delivered, not yet tested by hand)
 - [ ] Customer: emergency booking flow with countdown and timeout state (code delivered, not yet tested by hand)
 - [ ] Customer: contractor bulk-hire + subscription screens
-- [ ] Worker: onboarding wizard with trades, rates inside the allowed band, location pin, radius, bio (code delivered)
-- [ ] Worker: home with availability toggle (broadcast live), incoming requests with 45 s countdown, accept and decline, today's earnings, active job card (code delivered)
-- [ ] Worker: job page with on the way, start and complete with OTPs, map, chat, rate the customer, cancel (code delivered)
-- [ ] Worker: notifications page (code delivered)
-- [ ] Worker: earnings page, ID card with QR and verification form, reputation, reviews, referral, premium (not built yet)
+- [x] Worker: onboarding wizard with trades, rates inside the allowed band, location pin, radius, bio
+- [x] Worker: home with availability toggle (broadcast live), incoming requests with 45 s countdown, accept and decline, today's earnings, active job card
+- [x] Worker: job page with on the way, start and complete with OTPs, map, chat, rate the customer
+- [ ] Worker: cancel an accepted job (code delivered, not yet tested by hand)
+- [ ] Worker: notifications page (code delivered, not yet tested by hand)
+- [x] Worker: earnings page with balance, today / week / month, 7-day chart, payouts
+- [x] Worker: digital ID card with QR, share link, ID verification form with photo upload (demo)
+- [x] Worker: reputation page: trust score, weights with the worker's own numbers, tips, reviews
+- [x] Worker: referral code page (display only; rewards and tracking need an API)
+- [x] Worker: premium plan cards (display only; buying needs the subscriptions API)
+- [x] Worker: coming-soon cards
+- [ ] Waitlist form for the coming-soon cards (needs `POST /waitlist` in the API)
 - [ ] Admin: analytics, verification queue, users, bookings, disputes, fraud flags, trades, ads
 
 ## Stage 7 — polish
