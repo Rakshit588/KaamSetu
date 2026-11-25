@@ -9,6 +9,8 @@ import type { Role } from '@kaamsetu/shared';
 export type AuthPayload = { sub: string; role: Role | null };
 
 declare global {
+  // Express type augmentation requires a namespace; there is no ES-module equivalent.
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       userId?: string;
