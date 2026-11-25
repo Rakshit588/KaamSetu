@@ -12,3 +12,4 @@ export { SubscriptionPlan } from './SubscriptionPlan.js';
 export { Waitlist } from './Waitlist.js';
 export { WalletTransaction } from './WalletTransaction.js';
 export { BulkRequirement } from './BulkRequirement.js';
+export { AuditLog } from './AuditLog.js';

@@ -3,12 +3,14 @@ import { AppError } from '../errors.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { WorkerProfile } from '../models/WorkerProfile.js';
+import { registerAuditRoutes } from './admin/audit.js';
 import { recomputeWorkerTrust } from '../services/trust.js';
 import { createRouter } from '../utils/router.js';
 
 export const adminRouter = createRouter();
 
 adminRouter.use(requireAuth, requireRole('admin'));
+registerAuditRoutes(adminRouter);
 
 adminRouter.get('/verifications', async (_req, res) => {
   const pending = await WorkerProfile.find({ 'verification.status': 'pending' }).limit(100);
