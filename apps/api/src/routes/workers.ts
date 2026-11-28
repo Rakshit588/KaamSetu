@@ -192,14 +192,14 @@ workersRouter.get('/:id', async (req, res) => {
     user: user
       ? { id: String(user._id), name: user.name, avatarUrl: user.avatarUrl }
       : null,
-    profile: {
-      ...profile.toObject(),
-      verification: {
-        status: profile.verification.status,
-        phoneVerified: profile.verification.phoneVerified,
-        idNumberMasked: profile.verification.idNumberMasked,
+      profile: {
+        ...profile.toObject(),
+        verification: {
+          status: profile.verification?.status ?? 'none',
+          phoneVerified: profile.verification?.phoneVerified ?? false,
+          idNumberMasked: profile.verification?.idNumberMasked ?? '',
+        },
       },
-    },
     reviews,
   });
 });
