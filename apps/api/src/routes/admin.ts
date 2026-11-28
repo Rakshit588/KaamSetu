@@ -31,9 +31,14 @@ adminRouter.post(
   async (req, res) => {
     const profile = await WorkerProfile.findById(req.params.workerProfileId);
     if (!profile) throw new AppError(404, 'Worker not found', 'NOT_FOUND');
-    profile.verification.status = req.body.status;
-    profile.verification.rejectionReason = req.body.rejectionReason;
-    if (req.body.status === 'verified') profile.verification.verifiedAt = new Date();
+    profile.set('verification.status', req.body.status);
+    profile.set('verification.rejectionReason', req.body.rejectionReason);
+
+    if (req.body.status === 'verified') {
+      profile.set('verification.verifiedAt', new Date());
+    } else {
+      profile.set('verification.verifiedAt', undefined);
+    }
     await profile.save();
     const trust = await recomputeWorkerTrust(String(profile.userId));
     res.json({ profile, trust });

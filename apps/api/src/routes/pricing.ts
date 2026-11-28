@@ -1,3 +1,4 @@
+
 import { z } from 'zod';
 import { TRADE_KEYS, TRADES, estimatePrice } from '@kaamsetu/shared';
 import { config } from '../config.js';
@@ -7,30 +8,38 @@ import { createRouter } from '../utils/router.js';
 
 export const pricingRouter = createRouter();
 
+const estimateSchema = z.object({
+  body: z.object({
+    trade: z.enum(TRADE_KEYS),
+    estimatedDurationHrs: z.number().min(0.5).max(72),
+    urgency: z.enum(['normal', 'same_day', 'emergency']).default('normal'),
+    isNight: z.boolean().optional(),
+    workerId: z.string().optional(),
+    emergencyIntensity: z.number().min(0).max(1).optional(),
+  }),
+});
+
 pricingRouter.post(
   '/estimate',
-  validate(
-    z.object({
-      body: z.object({
-        trade: z.enum(TRADE_KEYS),
-        estimatedDurationHrs: z.number().min(0.5).max(72),
-        urgency: z.enum(['normal', 'same_day', 'emergency']).default('normal'),
-        isNight: z.boolean().optional(),
-        workerId: z.string().optional(),
-        emergencyIntensity: z.number().min(0).max(1).optional(),
-      }),
-    }),
-  ),
+  validate(estimateSchema),
   async (req, res) => {
-    const trade = TRADES[req.body.trade];
+    // Use the validated trade key for safe TRADES lookup.
+    const tradeKey = req.body.trade as (typeof TRADE_KEYS)[number];
+    const trade = TRADES[tradeKey];
+
     let workerHourlyRate: number | undefined;
+
     if (req.body.workerId) {
       const profile =
         (await WorkerProfile.findOne({ userId: req.body.workerId })) ||
         (await WorkerProfile.findById(req.body.workerId));
-      const skill = profile?.skills.find((s) => s.trade === req.body.trade);
-      workerHourlyRate = skill?.hourlyRate;
+
+      const skill = profile?.skills.find((s) => s.trade === tradeKey);
+
+      // Mongoose hourlyRate may be null, so normalize it to undefined.
+      workerHourlyRate = skill?.hourlyRate ?? undefined;
     }
+
     const breakdown = estimatePrice({
       baseRateHour: trade.baseRateHour,
       baseRateDay: trade.baseRateDay,
@@ -43,6 +52,7 @@ pricingRouter.post(
       platformFeeRate: config.platformFeeRate,
       emergencyIntensity: req.body.emergencyIntensity,
     });
+
     res.json({
       trade: trade.key,
       breakdown,

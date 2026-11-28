@@ -1,139 +1,233 @@
-# KaamSetu feature checklist
+# KaamSetu — Development Checklist
 
-Status: **API (Stages 1 to 4) is done and tested** (41 automated tests: 15 shared + 26 API). **Web: the customer journey and the worker core work end to end** (login, search, booking, live requests, accept, OTP start and finish, chat, demo payment, review), tested by hand. Worker extras (earnings, ID card with QR, verification, reputation) work too. Admin, the remaining API features and polish are next.
+> Updated against the repository's recent commits, current `CHECKLIST.md`, project specifications, and the web build output shared in chat. This is a progress tracker, not a claim that every feature was independently re-tested in this session.
 
-- `[x]` = built and tested. `[ ]` = not done. "code delivered" = written but not yet tested by hand.
+**Legend**
+- [x] Implemented and verified (per repository notes or user-shared test/build evidence)
+- [ ] Remaining, or implementation exists but still needs hands-on verification
 
-## Stage 1 — scaffolding
+---
 
-- [x] Monorepo: `apps/web`, `apps/api`, `apps/mobile` (stub), `packages/shared`
-- [x] Shared types, constants, trust / pricing / matching / booking functions
-- [x] Env files (`.env`, `.env.example` per app)
-- [x] Docker + docker-compose
-- [x] ESLint + Prettier
-- [x] CI-ready GitHub Actions workflow
-- [x] Health-check endpoint
-- [x] Structured logging (pino)
+## Stage 1 — Repository & project foundation
+
+- [x] Monorepo structure (`apps/web`, `apps/api`, `apps/mobile` stub, `packages/shared`)
+- [x] npm workspaces
+- [x] Shared types, constants and core logic package
+- [x] Environment configuration and example files
+- [x] Docker / docker-compose setup
+- [x] ESLint and Prettier configuration
+- [x] CI workflow
+- [x] API health endpoint
+- [x] Structured API logging
 
 ## Stage 2 — API foundation
 
-- [x] User, WorkerProfile (2dsphere), CustomerProfile, Trade, Booking, Review, Message, Notification, Advertisement, Report, SubscriptionPlan models
-- [x] BulkRequirement and WalletTransaction models
-- [x] Phone + OTP auth (`OtpProvider`: dev / MSG91 / Firebase slots)
-- [x] Dev OTP always `123456`, logged to console
-- [x] JWT access + refresh with rotation (unique `jti`, old token cannot be reused)
-- [x] OTP attempt limits + rate limiting + helmet + CORS + zod
-- [x] Role selection on first login (admin seed-only)
-- [x] Trades catalogue endpoint
-- [x] Seed: 1 admin, 15 customers, 60 workers, 150 bookings, reviews
+- [x] Core Mongoose models (users, worker/customer profiles, trades, bookings, reviews, messages, notifications, ads, reports, subscription plans)
+- [x] Bulk-hire requirement and wallet transaction models
+- [x] Phone-number + OTP authentication
+- [x] Development OTP flow
+- [x] JWT access/refresh token flow and refresh rotation
+- [x] OTP attempt limits and rate limiting
+- [x] Security middleware (Helmet, CORS, Zod validation)
+- [x] Role selection for first-time users
+- [x] Trades catalogue
+- [x] Demo seed data
 
-## Stage 3 — worker, geo, match, price, trust
+## Stage 3 — Worker profiles, location, matching and pricing
 
-- [x] Worker profile get/update, availability toggle, digital worker ID (`KS-XXXXXX`)
-- [x] Verification upload + masked ID storage, `KycProvider` mock, admin approve/reject
-- [x] Trust score recompute + breakdown endpoint
-- [x] Geo search (`$geoNear`) with filters (rating, verified, available, price, distance)
-- [x] `MatchingService` weighted score + top 3 "why this match" reasons
-- [x] Free-text to trade mapper (`/ai/interpret`), English + Hindi keywords
-- [x] Pricing estimate with worker pay, platform fee, urgency, min to max
-- [x] Unit tests: trust, pricing, matching, booking state machine
-- [x] API tests: auth, trades, worker profile, geo/match, pricing
+- [x] Worker profile read/update
+- [x] Worker availability toggle
+- [x] Digital worker ID generation
+- [x] Verification upload flow and mock KYC provider
+- [x] Admin approve/reject verification API
+- [x] Trust-score calculation and breakdown
+- [x] Geospatial worker search
+- [x] Search filters (rating, verification, availability, price, distance)
+- [x] Weighted matching and match-reason output
+- [x] Free-text trade interpretation (English/Hindi keyword logic)
+- [x] Pricing estimate, worker pay, platform fee, urgency and price range
+- [x] Shared unit tests (trust, pricing, matching, booking state machine)
+- [x] API tests for auth, trades, worker profile, search/matching and pricing
 
-## Stage 4 — bookings, realtime, payments (API)
+## Stage 4 — Booking, realtime, payments and communication (API)
 
-- [x] Booking state machine (shared) with tests
-- [x] Direct booking + emergency booking (`/bookings`, `/bookings/emergency`)
-- [x] Atomic accept (only one worker wins), decline, open-requests list for workers
-- [x] Status changes with start / completion OTP and GPS check; party check on every change
-- [x] Emergency broadcast with expanding radius (2, 5, 10 km) and 3-minute fallback
-- [x] Socket.io server wired in `index.ts` (availability, job requests, status, chat)
-- [x] Mock UPI pay + release, worker wallet payout (Razorpay test slot, demo mode)
-- [x] Reviews both ways, rating average, trust score recompute (`/reviews`)
-- [x] Chat history + HTTP send (`/chat`)
-- [x] Notifications list, unread count, mark read (`/notifications`)
-- [x] Worker earnings dashboard endpoint (`/wallet/me`)
-- [x] Fraud rules service wired into bookings and chat
-- [x] Integration tests: full booking flow, emergency race, reviews, chat, notifications, wallet
-- [ ] Admin fraud queue endpoint
-- [ ] PDF invoice download route (`utils/invoice.ts` exists)
-- [ ] Contractor bulk-hire routes (`BulkRequirement` model exists)
-- [ ] Favourite workers
-- [ ] Advertisements serving + impression / click tracking
-- [ ] Referral program endpoints
-- [ ] Premium / subscription purchase via mock payment
-- [ ] Admin analytics endpoints
-- [ ] Swagger at `/docs`
-- [ ] Test the `jobsAccepted` / `jobsCancelled` counters
+- [x] Booking state machine
+- [x] Direct booking endpoint
+- [x] Emergency booking endpoint
+- [x] Atomic worker acceptance
+- [x] Decline and worker open-request flow
+- [x] Booking status progression
+- [x] Start and completion OTP checks
+- [x] GPS/location checks for relevant status transitions
+- [x] Socket.io integration for booking/status/chat/availability events
+- [x] Emergency broadcast radius logic and fallback
+- [x] Mock UPI payment and payment release
+- [x] Worker wallet / earnings API
+- [x] Reviews and trust-score recomputation
+- [x] Chat history and HTTP message send
+- [x] Notifications API (list, unread count, mark read)
+- [x] Fraud rules integrated with booking/chat flows
+- [x] Integration tests for booking, emergency race, reviews, chat, notifications and wallet
+- [ ] Admin fraud-queue endpoint
+- [ ] PDF invoice route (invoice utility exists; route/output still to verify)
+- [ ] Contractor bulk-hire API routes
+- [ ] Favourite-worker API
+- [ ] Advertisement serving and impression/click tracking
+- [ ] Referral API and reward tracking
+- [ ] Premium/subscription purchase flow
+- [ ] Admin analytics API
+- [ ] Swagger/OpenAPI docs at `/docs`
+- [ ] Verify `jobsAccepted` / `jobsCancelled` counters and edge cases
 
-## Stage 5 — web foundation
+## Stage 5 — Web foundation
 
-- [x] Design system: tokens, light + dark, fonts, buttons, cards
-- [x] Landing page: hero, stats, how it works, trades, trust, stories, FAQ, CTA
-- [x] Login (OTP) and role selection
-- [x] API client + auth state: token refresh, session restore
-- [x] i18n scaffold: English + Hindi dictionaries, language switcher (every customer screen uses it)
-- [x] Shared UI: skeleton, empty / error states, demo badge, stars, trust ring, map (Leaflet), socket client
+- [x] Design tokens and reusable UI system
+- [x] Light/dark theme foundations
+- [x] Landing page sections and navigation
+- [x] Login with OTP
+- [x] Role selection
+- [x] API client and authentication state
+- [x] Token refresh/session restore
+- [x] English/Hindi translation scaffolding and switcher
+- [x] Shared UI states/components (loading, empty, errors, demo badge, stars, trust ring)
+- [x] Leaflet map integration
+- [x] Socket client integration
+- [x] Next.js production build compiles successfully (based on the build output shared in chat)
 
-## Stage 6 — web screens
+## Stage 6 — Customer web experience
 
-- [x] Customer: app shell with role guard and bottom nav, home with map, GPS, draggable pin, trade chips, emergency entry
-- [ ] Customer: notifications page (code delivered, not yet tested by hand)
-- [x] Customer: search with trade chips, "describe the problem" box, filters, sort, list and map views, live availability, match reasons, price estimate
-- [x] Customer: worker profile page with trust breakdown, reviews, map
-- [x] Customer: booking confirm with live price estimate
-- [x] Customer: booking tracking: status bridge, OTPs, live chat, pay + release (demo), review, timeline
-- [ ] Customer: cancel and "report a problem" buttons (code delivered, not yet tested by hand)
-- [ ] Customer: booking history with active / past tabs and book again (code delivered, not yet tested by hand)
-- [ ] Customer: emergency booking flow with countdown and timeout state (code delivered, not yet tested by hand)
-- [ ] Customer: contractor bulk-hire + subscription screens
-- [x] Worker: onboarding wizard with trades, rates inside the allowed band, location pin, radius, bio
-- [x] Worker: home with availability toggle (broadcast live), incoming requests with 45 s countdown, accept and decline, today's earnings, active job card
-- [x] Worker: job page with on the way, start and complete with OTPs, map, chat, rate the customer
-- [ ] Worker: cancel an accepted job (code delivered, not yet tested by hand)
-- [ ] Worker: notifications page (code delivered, not yet tested by hand)
-- [x] Worker: earnings page with balance, today / week / month, 7-day chart, payouts
-- [x] Worker: digital ID card with QR, share link, ID verification form with photo upload (demo)
-- [x] Worker: reputation page: trust score, weights with the worker's own numbers, tips, reviews
-- [x] Worker: referral code page (display only; rewards and tracking need an API)
-- [x] Worker: premium plan cards (display only; buying needs the subscriptions API)
-- [x] Worker: coming-soon cards
-- [ ] Waitlist form for the coming-soon cards (needs `POST /waitlist` in the API)
-- [ ] Admin: analytics, verification queue, users, bookings, disputes, fraud flags, trades, ads
+### Customer screens
 
-## Stage 7 — polish
+- [x] Customer app shell and role guard
+- [x] Bottom navigation
+- [x] Home/map screen
+- [x] GPS location and draggable location pin
+- [x] Trade/category selection
+- [x] Emergency entry point
+- [x] Worker search (list/map, filters, sort, availability)
+- [x] Problem-description/free-text search
+- [x] Matching reasons and price estimate
+- [x] Worker profile with trust details, reviews and map
+- [x] Booking confirmation and live price estimate
+- [x] Booking tracking/status timeline
+- [x] OTP flow for booking start/completion
+- [x] Live chat in booking flow
+- [x] Demo payment/release flow
+- [x] Review submission
+- [ ] Notifications screen: hands-on test
+- [ ] Cancel booking: hands-on test
+- [ ] Report a problem: hands-on test
+- [ ] Booking history (active/past tabs): hands-on test
+- [ ] Book again from history: hands-on test
+- [ ] Emergency booking countdown and timeout: hands-on test
+- [ ] Contractor bulk-hire UI and end-to-end flow
+- [ ] Customer subscription UI and purchase flow
 
-- [ ] PWA (installable, offline shell)
-- [ ] Voice input (Hindi / English)
-- [ ] Accessibility + performance pass
-- [ ] Coming-soon Phase 3 cards + waitlist form
+## Stage 7 — Worker web experience
 
-## Stage 8 — mobile (optional)
+### Core worker flow
 
-- [ ] Expo app (worker first)
+- [x] Worker onboarding wizard
+- [x] Trade selection
+- [x] Rate selection within permitted limits
+- [x] Location pin and service radius
+- [x] Worker bio
+- [x] Worker home/dashboard
+- [x] Availability toggle and live broadcast
+- [x] Incoming job requests and countdown
+- [x] Accept/decline request
+- [x] Today's earnings and active-job card
+- [x] Job details page
+- [x] On-the-way/status flow
+- [x] Start/complete job with OTP
+- [x] Job map
+- [x] Chat
+- [x] Rate customer
+- [ ] Cancel accepted job: hands-on test
+- [ ] Worker notifications screen: hands-on test
 
-## Stage 9 — final
+### Worker extras
 
-- [ ] README, demo script, deployment configs, screenshots
+- [x] Earnings page (balance and time-period summaries)
+- [x] Earnings chart
+- [x] Payout display
+- [x] Digital ID card
+- [x] QR code
+- [x] Share ID link
+- [x] Verification form and photo-upload UI (demo)
+- [x] Reputation/trust-score screen
+- [x] Trust-score breakdown
+- [x] Tips and review display
+- [x] Referral-code display (UI only)
+- [x] Premium-plan cards (display only)
+- [x] Coming-soon feature cards
+- [ ] Referral/reward tracking backend and end-to-end test
+- [ ] Premium purchase/subscription backend and end-to-end test
+- [ ] Waitlist form + API endpoint
 
-## Simulations (clearly labelled "Demo mode")
+## Stage 8 — Admin experience
 
-- [x] Mock KYC, mock OTP, Mock UPI / Razorpay test provider, in-app notification provider
-- [ ] "Demo mode" badges in the UI wherever a simulation is active
+- [ ] Admin dashboard and navigation
+- [ ] Analytics dashboard
+- [ ] Verification queue and approve/reject workflow UI
+- [ ] User/customer/worker management
+- [ ] Booking management
+- [ ] Disputes/problem reports
+- [ ] Fraud flags/queue
+- [ ] Trades/catalogue management
+- [ ] Ads management
+- [ ] Admin flows tested end to end
 
-## Known issues (fix before a production build)
+## Stage 9 — Quality, UX and platform polish
 
-- `npx tsc -p apps/api/tsconfig.json --noEmit` reports about 28 type errors in older files (null checks on `location` / `verification`, Mongoose array types in `auth.ts` and `booking.ts`, `providers/notification.ts` passes 4 arguments to a 3-argument function). Tests and `tsx` run fine; `tsc` builds will not until these are fixed.
-- `availability:update` socket event is broadcast to every connected client.
-- Short keywords such as "ac" in the free-text trade mapper can match inside other words.
-- `GET /workers/search` returns no worker name or location, so the search screen fetches each worker's profile (about 8 extra requests). Add `name` and `location` to the search response to remove them.
-- The worker side has no screens yet. `scripts/worker-sim.ps1` plays the worker (accept, on the way, start, complete, chat) from the terminal for testing.
-- Dev only: the API rate limits are loosened outside production. On Windows, `esbuild` sometimes loses its platform binary after `npm install`; reinstall it with `npm install --no-save @esbuild/win32-x64@<same version as esbuild>`.
-- Review tags in the UI are limited to punctual, skilled and polite until the full tag list is confirmed.
+- [ ] PWA/installability
+- [ ] Offline/poor-network handling
+- [ ] Voice input (Hindi/English)
+- [ ] Accessibility review (keyboard, labels, contrast, screen readers)
+- [ ] Performance review (maps, search, page loading, API requests)
+- [ ] Responsive/mobile-browser review
+- [ ] Demo-mode badges consistently shown wherever simulations are active
+- [ ] Confirm all demo/mock functionality is clearly labelled
+- [ ] Error handling and empty states review
+- [ ] Security review (auth, authorization, rate limits, input validation, uploads)
+- [ ] Fix known API TypeScript errors and get clean API type-check/build
+- [ ] Run all automated tests and record result
+- [ ] Manual regression test of customer and worker journeys
 
-## Next up
+## Stage 10 — Mobile (later/optional)
 
-1. Test the remaining customer screens by hand: notifications, history, emergency, cancel.
-2. Worker screens: onboarding wizard, home with availability toggle and incoming requests, active job, earnings, ID card, reputation (see the Stage 6 worker line above).
-3. Admin API endpoints and screens.
-4. Remaining API features: PDF invoice, bulk hire, favourites, ads, referrals, subscriptions, Swagger.
-5. Polish: PWA, voice input, dark mode and accessibility pass, README and demo script.
+- [ ] Expo app scaffolding
+- [ ] Worker mobile experience
+- [ ] Customer mobile experience (if required)
+- [ ] Mobile API/socket integration
+- [ ] Push notifications
+- [ ] Mobile testing and release preparation
+
+## Stage 11 — Demo and release preparation
+
+- [ ] Update README with current setup and feature status
+- [ ] Demo script
+- [ ] Deployment configuration
+- [ ] Screenshots
+- [ ] Seed/demo flow validation
+- [ ] Production environment variables and secrets checklist
+- [ ] Deployment smoke test
+- [ ] Final release checklist
+
+---
+
+## Known issues / follow-up checks
+
+- [ ] Fix API TypeScript errors previously noted in `npx tsc -p apps/api/tsconfig.json --noEmit` (reported nullability/Mongoose/provider-signature issues; re-run to confirm current state)
+- [ ] Restrict availability socket updates to appropriate users/rooms
+- [ ] Improve free-text trade keyword matching to avoid accidental substring matches
+- [ ] Include worker name/location in search response to reduce extra profile requests, if still unresolved
+- [ ] Review and test worker simulator script against the current booking flow
+- [ ] Confirm review tags and supported tag list
+- [ ] Verify Windows install/build stability for esbuild after dependency installs
+
+## Notes
+
+- Referral and premium screens are currently presentation/display-only until the corresponding APIs and purchase/reward workflows are implemented.
+- Verification, OTP and payment providers may be simulated; label these clearly in the UI.
+- This checklist reflects repo documentation/commit notes and user-shared build evidence. Items marked complete should be re-verified if code changes or regressions occur.
